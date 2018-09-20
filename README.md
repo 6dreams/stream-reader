@@ -15,10 +15,15 @@ Usage Example
 <?php
 declare(strict_types = 1);
 
+$handle = \fopen(__DIR__ . 'games.xml', 'rb');
+
 (new SixDreams\StreamReader\XmlStreamReader())
     ->registerCallback('/root/sport', '/root/sport/groups/group/events/event', function (string $rawXml) {
         echo 'XML: ' . $rawXml . "\n";
-    });
+    })
+    ->parse($handle);
+
+\fclose($handle);
 ```
 
 ## PHP JSON Stream Reader
