@@ -16,7 +16,6 @@ class XmlStreamReader implements StreamReaderInterface
     protected collecting;
 
     protected collected;
-
     protected collectedRef;
 
     public function parse(resource data, int buffer = 1024) -> bool
@@ -61,11 +60,18 @@ class XmlStreamReader implements StreamReaderInterface
         return true;
     }
 
-    public function registerCallback(string! collectPath, string extractPath, callable callback) -> <StreamReaderInterface>
+    public function registerCallback(string collectPath, string! extractPath, callable callback) -> <StreamReaderInterface>
     {
         let this->extractPath = strtolower(extractPath);
-        let this->collectPath = strtolower(collectPath);
-        let this->callback    = callback;
+        if (collectPath === "") {
+            let this->collectPath = this->extractPath;
+        } else {
+            let this->collectPath = strtolower(collectPath);
+        }
+        let this->callback = callback;
+        if strpos(this->extractPath, this->collectPath) !== 0 {
+            throw new \Exception("Path must extractPath must contain collectPath!");
+        }
 
         return this;
     }
@@ -82,7 +88,7 @@ class XmlStreamReader implements StreamReaderInterface
         let this->currentPath = this->currentPath . "/" . strtolower(name);
         this->checkPath();
 
-        if this->collecting {
+        if this->collecting || this->extracting {
             if this->extracting && !this->isExtract() {
                 this->addData(this->buildElement([name, attributes, ""]));
                 return;
@@ -114,8 +120,8 @@ class XmlStreamReader implements StreamReaderInterface
             if this->extracting && !extract {
                 this->addData(this->closeElement(name));
             } else {
-                unset(this->collected[this->collectedRef - 1]);
                 let this->collectedRef = this->collectedRef - 1;
+                unset(this->collected[this->collectedRef]);
             }
         }
 

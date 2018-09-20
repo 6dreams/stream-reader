@@ -28,6 +28,15 @@ class XmlStreamReaderTest extends TestCase
     }
 
     /**
+     * Tests invalid path.
+     */
+    public function testInvalidPath(): void
+    {
+        $this->expectExceptionMessage('Path must extractPath must contain collectPath!');
+        $this->requestData('/a/b/c', '/h/c/d/e');
+    }
+
+    /**
      * Data provider for test.
      *
      * @return array
@@ -39,6 +48,16 @@ class XmlStreamReaderTest extends TestCase
                 '<sport name="football" id="2"><league name="FBL02"><game team1="g1t1" team2="g1t2"><![CDATA[raw]]></game></league></sport>',
                 '<sport name="football" id="2"><LEAGUE name="supsuckers"><game team2="test_team_name"><var><![CDATA[test]]></var></game></LEAGUE></sport>',
                 '<sport name="snooker" id="1"><league name="SNK01"><game team1="t1" team2="t34"></game></league></sport>'
+            ]],
+            [null, '/xml/sport/league/game', [
+                '<game team1="g1t1" team2="g1t2"><![CDATA[raw]]></game>',
+                '<game team2="test_team_name"><var><![CDATA[test]]></var></game>',
+                '<game team1="t1" team2="t34"></game>'
+            ]],
+            ['/xml/sport/league/game', '/xml/sport/league/game', [
+                '<game team1="g1t1" team2="g1t2"><![CDATA[raw]]></game>',
+                '<game team2="test_team_name"><var><![CDATA[test]]></var></game>',
+                '<game team1="t1" team2="t34"></game>'
             ]]
         ];
     }
@@ -56,13 +75,15 @@ class XmlStreamReaderTest extends TestCase
         $handle    = \fopen(__DIR__ . '/sample.xml', 'rb');
         $collected = [];
 
-        (new StreamReader\XmlStreamReader())
-            ->registerCallback($collect, $extract, function (string $data) use (&$collected) {
-                $collected[] = $data;
-            })
-            ->parse($handle);
-
-        \fclose($handle);
+        try {
+            (new StreamReader\XmlStreamReader())
+                ->registerCallback($collect, $extract, function (string $data) use (&$collected) {
+                    $collected[] = $data;
+                })
+                ->parse($handle);
+        } finally {
+            \fclose($handle);
+        }
 
         return $collected;
     }
