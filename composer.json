@@ -1,0 +1,10 @@
+{
+  "name": "6dreams/stream-reader",
+  "license": "proprietary",
+  "type": "project",
+  "autoload": {
+  },
+  "require-dev": {
+    "phpunit/phpunit": "7.2.7"
+  }
+}

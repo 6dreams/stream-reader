@@ -1,0 +1,6 @@
+/.idea/
+/vendor/
+/.temp/
+/ext/
+compile*.log
+stubs/streamparser

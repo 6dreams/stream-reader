@@ -1,0 +1,20 @@
+<xml>
+    <error>1</error>
+    <sport name="football" id="2">
+        <league name="FBL02">
+            <game team1="g1t1" team2="g1t2">raw</game>
+            <error>1</error>
+        </league>
+        <LEAGUE name="supsuckers">
+            <game team2="test_team_name">
+                <var>test</var>
+            </game>
+        </LEAGUE>
+        <error>1</error>
+    </sport>
+    <sport name="snooker" id="1">
+        <league name="SNK01">
+            <game team1="t1" team2="t34" />
+        </league>
+    </sport>
+</xml>
