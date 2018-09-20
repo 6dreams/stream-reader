@@ -18,6 +18,8 @@ class XmlStreamReader implements StreamReaderInterface
     protected collected;
     protected collectedRef;
 
+    protected lowerCase = false;
+
     public function parse(resource data, int buffer = 1024) -> bool
     {
         if (this->extractPath === null) {
@@ -79,6 +81,13 @@ class XmlStreamReader implements StreamReaderInterface
     public function setOptionCallbacks(callable optionsCallback) -> <StreamReaderInterface>
     {
         let this->optionsCallback = optionsCallback;
+
+        return this;
+    }
+
+    public function setLowerCaseNames(bool state) -> <StreamReaderInterface>
+    {
+        let this->lowerCase = state;
 
         return this;
     }
@@ -169,9 +178,9 @@ class XmlStreamReader implements StreamReaderInterface
     private function buildElement(array element) -> string
     {
         var ret, k, v;
-        let ret = "<" . element[0];
+        let ret = "<" . (this->lowerCase ? strtolower(element[0]) : element[0]);
         for k, v in element[1] {
-            let ret = ret . " " . k . "=\"" . htmlentities(v, ENT_QUOTES | ENT_XML1, "UTF-8") . "\"";
+            let ret = ret . " " . (this->lowerCase ? strtolower(k) : k) . "=\"" . htmlentities(v, ENT_QUOTES | ENT_XML1, "UTF-8") . "\"";
         }
 
         return ret . ">" . element[2];
@@ -179,7 +188,7 @@ class XmlStreamReader implements StreamReaderInterface
 
     private function closeElement(string name) -> string
     {
-        return "</" . name . ">";
+        return "</" . (this->lowerCase ? strtolower(name) : name) . ">";
     }
 
     protected function fireCallback(string text) -> void

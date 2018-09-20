@@ -4,3 +4,4 @@
 /ext/
 compile*.log
 stubs/streamparser
+tests/test.php

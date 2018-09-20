@@ -22,4 +22,9 @@ class XmlStreamReader implements \SixDreams\StreamReader\StreamReaderInterface
      * {@inheritdoc}
      */
     public function setOptionCallbacks(callable $optionsCallback): StreamReaderInterface {}
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setLowerCaseNames(bool $state): StreamReaderInterface {}
 }

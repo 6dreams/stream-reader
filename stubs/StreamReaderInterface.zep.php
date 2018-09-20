@@ -39,4 +39,12 @@ interface StreamReaderInterface
      */
     public function setOptionCallbacks(callable $optionsCallback): StreamReaderInterface;
 
+    /**
+     * Change case of all nodes and attributes to lower.
+     *
+     * @param bool $state
+     *
+     * @return StreamReaderInterface
+     */
+    public function setLowerCaseNames(bool $state): StreamReaderInterface;
 }
