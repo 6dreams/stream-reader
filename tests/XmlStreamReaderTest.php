@@ -46,6 +46,11 @@ class XmlStreamReaderTest extends TestCase
         $this->requestData('/a/b/c', '/h/c/d/e');
     }
 
+    public function testInvalidXml(): void
+    {
+        $this->requestData('/test', '/test/dno', null, 'invalid.xml');
+    }
+
     /**
      * Data provider for @see testLowerCase.
      *
@@ -94,12 +99,13 @@ class XmlStreamReaderTest extends TestCase
      * @param null|string   $collect
      * @param string        $extract
      * @param callable|null $cb
+     * @param string        $file
      *
      * @return array
      */
-    protected function requestData(?string $collect, string $extract, ?callable $cb = null): array
+    protected function requestData(?string $collect, string $extract, ?callable $cb = null, $file = 'sample.xml'): array
     {
-        $handle    = \fopen(__DIR__ . '/sample.xml', 'rb');
+        $handle    = \fopen(__DIR__ . DIRECTORY_SEPARATOR . $file, 'rb');
         $collected = [];
 
         try {

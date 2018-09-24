@@ -26,7 +26,7 @@ class XmlStreamReader implements StreamReaderInterface
             return false;
         }
 
-        var chunk, eof;
+        var chunk, eof, info;
         // \x78ml_parser_create
         let this->parser = xml_parser_create();
 
@@ -45,11 +45,25 @@ class XmlStreamReader implements StreamReaderInterface
         let this->collecting = false, this->extracting = false, this->currentPath = "";
         let this->collected = [], this->collectedRef = 0;
 
+        let info = stream_get_meta_data(data);
+
+        if info["seekable"] === true {
+            fseek(data, 0);
+        }
+
         let chunk = fread(data, buffer);
         while chunk !== false {
             let eof = feof(data);
             if (xml_parse(this->parser, chunk, eof) !== 1) {
-                break;
+                var code, line;
+                xml_parser_free(this->parser);
+                let code = xml_get_error_code(this->parser), line = xml_get_current_line_number(this->parser);
+                throw new \Exception(sprintf(
+                    "XML Parse Error: %d at line %d (chunk: %s)",
+                    code,
+                    line,
+                    chunk
+                ));
             }
             if (eof) {
                 break;

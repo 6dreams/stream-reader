@@ -1,0 +1,6 @@
+<xml>
+    <sport id="123">test</sport>
+    <sport id='></sport>
+    <data>raw_test</data>
+    </dtd>
+</xml>
