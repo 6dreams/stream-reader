@@ -46,8 +46,12 @@ class XmlStreamReaderTest extends TestCase
         $this->requestData('/a/b/c', '/h/c/d/e');
     }
 
+    /**
+     * Test for invalid file.
+     */
     public function testInvalidXml(): void
     {
+        $this->expectExceptionMessageRegExp('/XML Parse Error: \d+ at line \d+/');
         $this->requestData('/test', '/test/dno', null, 'invalid.xml');
     }
 
