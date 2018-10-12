@@ -64,8 +64,8 @@ class XmlStreamReaderTest extends TestCase
     {
         return [
             ['/xml/sport', '/xml/sport/league/game', [
-                '<sport name="football" id="2"><league name="FBL02"><game team1="g1t1" team2="g1t2"><![CDATA[RaW]]></game></league></sport>',
-                '<sport name="football" id="2"><league name="supsuckers"><game team2="test_team_name"><var><![CDATA[TeSt]]></var></game></league></sport>',
+                '<sport name="football+game" id="2"><league name="FBL02"><game team1="g1t1" team2="g1t2"><![CDATA[RaW]]></game></league></sport>',
+                '<sport name="football+game" id="2"><league name="supsuckers"><game team2="test_team_name"><var><![CDATA[TeSt]]></var></game></league></sport>',
                 '<sport name="snooker" id="1"><league name="SNK01"><game team1="t1" team2="t34"></game></league></sport>'
             ]]
         ];
@@ -80,8 +80,8 @@ class XmlStreamReaderTest extends TestCase
     {
         return [
             ['/xml/sport', '/xml/sport/league/game', [
-                '<sport name="football" id="2"><league name="FBL02"><game team1="g1t1" team2="g1t2"><![CDATA[RaW]]></game></league></sport>',
-                '<sport name="football" id="2"><LEAGUE name="supsuckers"><game Team2="test_team_name"><var><![CDATA[TeSt]]></var></game></LEAGUE></sport>',
+                '<sport name="football+game" id="2"><league name="FBL02"><game team1="g1t1" team2="g1t2"><![CDATA[RaW]]></game></league></sport>',
+                '<sport name="football+game" id="2"><LEAGUE name="supsuckers"><game Team2="test_team_name"><var><![CDATA[TeSt]]></var></game></LEAGUE></sport>',
                 '<sport name="snooker" id="1"><league name="SNK01"><game team1="t1" team2="t34"></game></league></sport>'
             ]],
             [null, '/xml/sport/league/game', [

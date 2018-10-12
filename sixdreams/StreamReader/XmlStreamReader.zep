@@ -56,14 +56,10 @@ class XmlStreamReader implements StreamReaderInterface
             let eof = feof(data);
             if (xml_parse(this->parser, chunk, eof) !== 1) {
                 var code, line;
-                xml_parser_free(this->parser);
                 let code = xml_get_error_code(this->parser), line = xml_get_current_line_number(this->parser);
-                throw new \Exception(sprintf(
-                    "XML Parse Error: %d at line %d (chunk: %s)",
-                    code,
-                    line,
-                    chunk
-                ));
+                xml_parser_free(this->parser);
+
+                throw new \Exception(sprintf("XML Parse Error: %d at line %d (chunk: %s)",code, line, chunk));
             }
             if (eof) {
                 break;
@@ -189,12 +185,19 @@ class XmlStreamReader implements StreamReaderInterface
         return this->currentPath === this->extractPath;
     }
 
+    /**
+     * Builds XML open element.
+     *
+     * @param array element
+     *
+     * @return string
+     */
     private function buildElement(array element) -> string
     {
         var ret, k, v;
         let ret = "<" . (this->lowerCase ? strtolower(element[0]) : element[0]);
         for k, v in element[1] {
-            let ret = ret . " " . (this->lowerCase ? strtolower(k) : k) . "=\"" . htmlentities(v, ENT_QUOTES | ENT_XML1, "UTF-8") . "\"";
+            let ret = ret . " " . (this->lowerCase ? strtolower(k) : k) . "=\"" . htmlentities(v, ENT_QUOTES, "UTF-8") . "\"";
         }
 
         return ret . ">" . element[2];

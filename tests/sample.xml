@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <xml>
     <error>1</error>
-    <sport name="football" id="2">
+    <sport name="football+game" id="2">
         <league name="FBL02">
             <game team1="g1t1" team2="g1t2">RaW</game>
             <error>1</error>
