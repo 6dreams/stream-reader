@@ -197,7 +197,7 @@ class XmlStreamReader implements StreamReaderInterface
         var ret, k, v;
         let ret = "<" . (this->lowerCase ? strtolower(element[0]) : element[0]);
         for k, v in element[1] {
-            let ret = ret . " " . (this->lowerCase ? strtolower(k) : k) . "=\"" . htmlentities(v, ENT_QUOTES, "UTF-8") . "\"";
+            let ret = ret . " " . (this->lowerCase ? strtolower(k) : k) . "=\"" . htmlentities(v, ENT_QUOTES | ENT_XML1, "UTF-8") . "\"";
         }
 
         return ret . ">" . element[2];
